@@ -39,7 +39,9 @@ var (
 	// ActionsPushAndPull defines the actions for read-write interactions with a Notary Repository
 	ActionsPushAndPull = []string{"pull", "push"}
 	// NotaryServer is the endpoint serving the Notary trust server
-	NotaryServer = "https://notary.docker.io"
+	NotaryServerHostname = "notary.docker.io"
+	NotaryServer = "https://" + NotaryServerHostname
+	NotaryServerIndexAlias = "docker.io"
 )
 
 // Server returns the base URL for the trust server.
@@ -97,14 +99,24 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 
 	repo := ref.Context()
 	scopes := []string{repo.Scope(transport.PushScope)}
-	tr, err := transport.New(repo.Registry, auth, base, scopes)
+
+	gun := repoInfo.Name()
+	reg := repo.Registry
+	if server == NotaryServer {
+		reg, _ = name.NewRegistry(NotaryServerHostname)
+		gun = fmt.Sprintf("%s/%s", NotaryServerIndexAlias, repo.RepositoryStr())
+		scopes = []string{fmt.Sprintf("repository:%s:%s", gun, transport.PushScope)}
+		log.Infof("Overrode registry (%s), GUN (%s), and scopes (%s) for default Notary DCT", reg.Name(), gun, scopes)
+	}
+
+	tr, err := transport.New(reg, auth, base, scopes)
 	if err != nil {
 		return nil, err
 	}
 
 	return client.NewFileCachedRepository(
 		getTrustDirectory(config.RootPath),
-		data.GUN(repoInfo.Name()),
+		data.GUN(gun),
 		server,
 		tr,
 		GetPassphraseRetriever(os.Stdin, os.Stderr, config.RootPassphrase, config.RepositoryPassphrase),
