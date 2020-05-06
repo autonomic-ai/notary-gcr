@@ -114,6 +114,10 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 		scopes = []string{fmt.Sprintf("repository:%s:%s", gun, transport.PushScope)}
 		log.Infof("Overrode registry (%s), GUN (%s), and scopes (%s) for default Notary DCT", reg.Name(), gun, scopes)
 	}
+	log.Infof("gun: %s", gun)
+	log.Infof("reg: %s", reg.Name())
+	log.Infof("server: %s", server)
+	log.Infof("NotaryServer: %s", NotaryServer)
 
 	tr, err := transport.New(reg, auth, base, scopes)
 	if err != nil {

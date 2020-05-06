@@ -25,7 +25,6 @@ require (
 	github.com/miekg/pkcs11 v1.0.2 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.0.0 // indirect
-	github.com/autonomic-ai/notary-gcr v0.0.3
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/viper v1.4.0 // indirect
 	github.com/theupdateframework/notary v0.6.1
