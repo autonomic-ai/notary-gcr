@@ -1,5 +1,5 @@
 # Go Options
-MODULE       := github.com/simonshyu/notary-gcr
+MODULE       := github.com/autonomic-ai/notary-gcr
 LDFLAGS      := -w -s
 COVEROUT     := ./coverage.out
 

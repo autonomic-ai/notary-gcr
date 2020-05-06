@@ -4,7 +4,7 @@ Go library providing high-level Notary API for go-containerregistry.
 ## Usage
 
 ```go
-import "github.com/simonshyu/notary-gcr/pkg/gcr"
+import "github.com/autonomic-ai/notary-gcr/pkg/gcr"
 ```
 
 
@@ -20,5 +20,5 @@ trustedRepo, _ := gcr.NewTrustedGcrRepository("~/.notary", ref, auth)
 ## Limitation
 
 Since `google/go-containerregistry` does not support token authentication yet, so if your notary server enable `auth`, this library may not work.
-* https://github.com/simonshyu/notary-gcr/issues/6
+* https://github.com/autonomic-ai/notary-gcr/issues/6
 * https://docs.docker.com/notary/reference/server-config/#auth-section-optional

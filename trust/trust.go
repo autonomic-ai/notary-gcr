@@ -39,8 +39,8 @@ var (
 	// ActionsPushAndPull defines the actions for read-write interactions with a Notary Repository
 	ActionsPushAndPull = []string{"pull", "push"}
 	// NotaryServer is the endpoint serving the Notary trust server
-	NotaryServerHostname = "notary.docker.io"
-	NotaryServer = "https://" + NotaryServerHostname
+	NotaryServerHostname   = "notary.docker.io"
+	NotaryServer           = "https://" + NotaryServerHostname
 	NotaryServerIndexAlias = "docker.io"
 )
 
@@ -96,6 +96,12 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 		TLSClientConfig:     cfg,
 		DisableKeepAlives:   true,
 	}
+	log.Infof("context_name: %s", ref.Context().Name())
+	log.Infof("context_repository_str: %s", ref.Context().RepositoryStr())
+	log.Infof("context_registry_str: %s", ref.Context().RegistryStr())
+	log.Infof("context_str: %s", ref.Context().String())
+	log.Infof("identifier: %s", ref.Identifier())
+	log.Infof("name: %s", ref.Name())
 
 	repo := ref.Context()
 	scopes := []string{repo.Scope(transport.PushScope)}

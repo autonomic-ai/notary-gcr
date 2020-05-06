@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/simonshyu/notary-gcr/trust"
+	"github.com/autonomic-ai/notary-gcr/trust"
 	"github.com/theupdateframework/notary/client"
 	"github.com/theupdateframework/notary/tuf/data"
 )
@@ -101,8 +101,9 @@ func pushTrustedReference(ref name.Reference, img v1.Image, auth authn.Authentic
 
 	if err != nil {
 		log.Infof("failed to sign: %s", err)
+	} else {
+		log.Infof("Successfully signed %s:%s\n", ref.Context().Name(), ref.Identifier())
 	}
-	log.Infof("Successfully signed %s:%s\n", ref.Context().Name(), ref.Identifier())
 	return nil
 }
 
