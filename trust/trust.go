@@ -106,7 +106,7 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 	repo := ref.Context()
 	scopes := []string{repo.Scope(transport.PushScope)}
 
-	gun := repoInfo.Name()
+	gun := ref.Context().Name()
 	reg := repo.Registry
 	if server == NotaryServer {
 		reg, _ = name.NewRegistry(NotaryServerHostname)
