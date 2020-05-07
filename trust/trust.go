@@ -96,12 +96,6 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 		TLSClientConfig:     cfg,
 		DisableKeepAlives:   true,
 	}
-	log.Infof("context_name: %s", ref.Context().Name())
-	log.Infof("context_repository_str: %s", ref.Context().RepositoryStr())
-	log.Infof("context_registry_str: %s", ref.Context().RegistryStr())
-	log.Infof("context_str: %s", ref.Context().String())
-	log.Infof("identifier: %s", ref.Identifier())
-	log.Infof("name: %s", ref.Name())
 
 	repo := ref.Context()
 	scopes := []string{repo.Scope(transport.PushScope)}
@@ -114,10 +108,8 @@ func GetNotaryRepository(ref name.Reference, auth authn.Authenticator, repoInfo 
 		scopes = []string{fmt.Sprintf("repository:%s:%s", gun, transport.PushScope)}
 		log.Infof("Overrode registry (%s), GUN (%s), and scopes (%s) for default Notary DCT", reg.Name(), gun, scopes)
 	}
-	log.Infof("gun: %s", gun)
-	log.Infof("reg: %s", reg.Name())
-	log.Infof("server: %s", server)
-	log.Infof("NotaryServer: %s", NotaryServer)
+
+	log.Infof("Using registry (%s), GUN (%s), and scopes (%s) for server (%s)", reg.Name(), gun, scopes, server)
 
 	tr, err := transport.New(reg, auth, base, scopes)
 	if err != nil {
