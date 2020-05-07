@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
+	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/theupdateframework/notary/client"
 	"github.com/theupdateframework/notary/passphrase"
 	"github.com/theupdateframework/notary/trustpinning"
 	"github.com/theupdateframework/notary/tuf/data"
-	"github.com/google/go-containerregistry/pkg/name"
 	"gotest.tools/assert"
 	is "gotest.tools/assert/cmp"
 )
