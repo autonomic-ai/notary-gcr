@@ -3,7 +3,6 @@ package gcr
 import (
 	"encoding/hex"
 	"net/http"
-	"sort"
 	"time"
 
 	"github.com/google/go-containerregistry/pkg/authn"
@@ -67,27 +66,27 @@ func pushTrustedReference(ref name.Reference, img v1.Image, auth authn.Authentic
 	_, err = repo.ListTargets()
 
 	switch err.(type) {
-	case client.ErrRepoNotInitialized, client.ErrRepositoryNotExist:
-		keys := repo.GetCryptoService().ListKeys(data.CanonicalRootRole)
-		var rootKeyID string
-		// always select the first root key
-		if len(keys) > 0 {
-			sort.Strings(keys)
-			rootKeyID = keys[0]
-		} else {
-			rootPublicKey, err := repo.GetCryptoService().Create(data.CanonicalRootRole, "", data.ECDSAKey)
-			if err != nil {
-				log.Errorf("error: %s", err)
-			}
-			rootKeyID = rootPublicKey.ID()
-		}
-		// Initialize the notary repository with a remotely managed snapshot key
-		if err := repo.Initialize([]string{rootKeyID}, data.CanonicalSnapshotRole); err != nil {
-			log.Errorf("error: %s", err)
-		}
+	// case client.ErrRepoNotInitialized, client.ErrRepositoryNotExist:
+	// 	keys := repo.GetCryptoService().ListKeys(data.CanonicalRootRole)
+	// 	var rootKeyID string
+	// 	// always select the first root key
+	// 	if len(keys) > 0 {
+	// 		sort.Strings(keys)
+	// 		rootKeyID = keys[0]
+	// 	} else {
+	// 		rootPublicKey, err := repo.GetCryptoService().Create(data.CanonicalRootRole, "", data.ECDSAKey)
+	// 		if err != nil {
+	// 			log.Errorf("error: %s", err)
+	// 		}
+	// 		rootKeyID = rootPublicKey.ID()
+	// 	}
+	// 	// Initialize the notary repository with a remotely managed snapshot key
+	// 	if err := repo.Initialize([]string{rootKeyID}, data.CanonicalSnapshotRole); err != nil {
+	// 		log.Errorf("error: %s", err)
+	// 	}
 
-		log.Infof("Finished initializing %s\n", ref.Context().Name())
-		err = repo.AddTarget(target, data.CanonicalTargetsRole)
+	// 	log.Infof("Finished initializing %s\n", ref.Context().Name())
+	// 	err = repo.AddTarget(target, data.CanonicalTargetsRole)
 	case nil:
 		// already initialized and we have successfully downloaded the latest metadata
 		err = addTargetToAllSignableRoles(repo, target)
